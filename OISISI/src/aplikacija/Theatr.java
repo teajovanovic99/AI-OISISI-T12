@@ -65,9 +65,11 @@ public class Theatr {
         ReadWriteFile rw = new ReadWriteFile();
         Map<String, Korisnik> korisnici = (Map<String, Korisnik>) rw.readFile("src/podaci/korisnici.txt");
         Map<Long, Predstava> predstave = (Map<Long, Predstava>) rw.readFile("src/podaci/predstave.txt");
+        Map<Long, Karta> karte = (Map<Long, Karta>) rw.readFile("src/podaci/karte.txt");
 
         Singleton.getInstance().setKorisnici(korisnici);
         Singleton.getInstance().setPredstave(predstave);
+        Singleton.getInstance().setKarte(karte);
 
         Ruter ruter = new Ruter();
         Singleton.getInstance().setRuter(ruter);

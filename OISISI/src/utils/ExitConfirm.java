@@ -24,6 +24,7 @@ public class ExitConfirm implements WindowListener {
             ReadWriteFile rw = new ReadWriteFile();
             rw.writeFile("src/podaci/korisnici.txt", Singleton.getInstance().getKorisnici());
             rw.writeFile("src/podaci/predstave.txt", Singleton.getInstance().getPredstave());
+            rw.writeFile("src/podaci/karte.txt", Singleton.getInstance().getKarte());
 
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         }

@@ -49,7 +49,9 @@ public class Ruter extends JFrame {
         ProzorPredstave prozorPredstave = new ProzorPredstave();
         ProzorKreirajPredstavu prozorKreirajPredstavu = new ProzorKreirajPredstavu();
         ProzorPredstavaDetaljanPrikaz prozorPredstavaDetaljanPrikaz = new ProzorPredstavaDetaljanPrikaz();
-
+        ProzorIzmeniPredstavu prozorIzmeniPredstavu = new ProzorIzmeniPredstavu();
+        ProzorIzvestajZaOdabranuPredstavu prozorIzvestajZaOdabranuPredstavu = new ProzorIzvestajZaOdabranuPredstavu();
+        ProzorIzvestajZaSvePredstave prozorIzvestajZaSvePredstave = new ProzorIzvestajZaSvePredstave();
 
         this.prozori = new HashMap<>();
         this.prozori.put(ProzorPrijava.class, prozorPrijava);
@@ -57,6 +59,9 @@ public class Ruter extends JFrame {
         this.prozori.put(ProzorPredstave.class, prozorPredstave);
         this.prozori.put(ProzorKreirajPredstavu.class, prozorKreirajPredstavu);
         this.prozori.put(ProzorPredstavaDetaljanPrikaz.class, prozorPredstavaDetaljanPrikaz);
+        this.prozori.put(ProzorIzmeniPredstavu.class, prozorIzmeniPredstavu);
+        this.prozori.put(ProzorIzvestajZaOdabranuPredstavu.class, prozorIzvestajZaOdabranuPredstavu);
+        this.prozori.put(ProzorIzvestajZaSvePredstave.class, prozorIzvestajZaSvePredstave);
     }
 
     public void promeniProzor(Class<?> prozor) {
@@ -75,6 +80,19 @@ public class Ruter extends JFrame {
             prozorPredstave.ocistiPretragu();
             prozorPredstave.popuniTabelu(Singleton.getInstance().getPredstave().values()
                     .stream().collect(Collectors.toList()));
+        }
+        else if (prozor.getName().equals(ProzorIzmeniPredstavu.class.getName())) {
+            ProzorIzmeniPredstavu prozorIzmeniPredstavu = (ProzorIzmeniPredstavu) prozori.get(prozor);
+            prozorIzmeniPredstavu.popuniPolja(Singleton.getInstance().getPredstavaZaIzmenu());
+        } else if (prozor.getName().equals(ProzorIzvestajZaOdabranuPredstavu.class.getName())) {
+            ProzorIzvestajZaOdabranuPredstavu piop = (ProzorIzvestajZaOdabranuPredstavu) prozori.get(prozor);
+            piop.popuniTabelu(Singleton.getInstance().getPredstavaIzvestaj());
+        } else if (prozor.getName().equals(ProzorIzvestajZaSvePredstave.class.getName())) {
+            ProzorIzvestajZaSvePredstave pisp = (ProzorIzvestajZaSvePredstave) prozori.get(prozor);
+            pisp.popuniTabelu();
+        } else if (prozor.getName().equals(ProzorPrijava.class.getName())) {
+            ProzorPrijava prozorPrijava = (ProzorPrijava) prozori.get(prozor);
+            prozorPrijava.ocistiPolja();
         }
     }
 

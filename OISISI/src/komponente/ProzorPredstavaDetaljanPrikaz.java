@@ -31,6 +31,9 @@ public class ProzorPredstavaDetaljanPrikaz extends JPanel {
     private JTextField tfCena;
     private JTable tblSedista;
     private JButton btnRezervisi;
+    private JButton btnIzmeni;
+    private JButton btnIzvestaj;
+
 
     public ProzorPredstavaDetaljanPrikaz() {
         lblNaziv = new JLabel("Naziv: ");
@@ -55,6 +58,15 @@ public class ProzorPredstavaDetaljanPrikaz extends JPanel {
         tblSedista.getTableHeader().setReorderingAllowed(false);
         tblSedista.getModel().addTableModelListener(new SedistaTableModelListener());
 
+        btnIzmeni = new JButton("Izmeni");
+        btnIzmeni.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PredstavaKontroler predstavaKontroler = Singleton.getInstance().getPredstavaKontroler();
+                predstavaKontroler.prikaziDetaljnoZaIzmenu(Singleton.getInstance().getDetaljnoPrikazanaPredstava());
+            }
+        });
+
         btnRezervisi = new JButton("Rezerviši");
         btnRezervisi.addActionListener(new ActionListener() {
             @Override
@@ -73,9 +85,26 @@ public class ProzorPredstavaDetaljanPrikaz extends JPanel {
             }
         });
 
+        btnIzvestaj = new JButton("Izveštaj");
+        btnIzvestaj.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Singleton.getInstance().setPredstavaIzvestaj(Singleton.getInstance().getDetaljnoPrikazanaPredstava());
+                Ruter ruter = Singleton.getInstance().getRuter();
+                ruter.osveziProzor(ProzorIzvestajZaOdabranuPredstavu.class);
+                ruter.promeniProzor(ProzorIzvestajZaOdabranuPredstavu.class);
+            }
+        });
+
         JPanel pnlOpcije = new JPanel();
         pnlOpcije.setLayout(new GridBagLayout());
         pnlOpcije.add(btnRezervisi, new GridBagConstraints(0, 0, 1, 1, 0,
+                0, GridBagConstraints.EAST, GridBagConstraints.NONE,
+                new Insets(20, 5, 0,5 ), 0, 0));
+        pnlOpcije.add(btnIzvestaj, new GridBagConstraints(1, 0, 1, 1, 0,
+                0, GridBagConstraints.EAST, GridBagConstraints.NONE,
+                new Insets(20, 5, 0,5 ), 0, 0));
+        pnlOpcije.add(btnIzmeni, new GridBagConstraints(2, 0, 1, 1, 0,
                 0, GridBagConstraints.EAST, GridBagConstraints.NONE,
                 new Insets(20, 5, 0,5 ), 0, 0));
 
@@ -104,7 +133,6 @@ public class ProzorPredstavaDetaljanPrikaz extends JPanel {
         add(tfCena, new GridBagConstraints(1, 3, 2, 1, 0, 0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(5, 5, 5,5 ), 0, 0));
-
         add(tblSedista.getTableHeader(), new GridBagConstraints(0, 4, 3, 1, 0, 0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(5, 5, 0,5 ), 0, 0));
@@ -155,7 +183,6 @@ public class ProzorPredstavaDetaljanPrikaz extends JPanel {
         });
     }
 
-
     public void popuniPolja(Predstava predstava) {
         tfNaziv.setText(predstava.getNaziv());
         taOpis.setText(predstava.getOpis());
@@ -169,6 +196,14 @@ public class ProzorPredstavaDetaljanPrikaz extends JPanel {
             btnRezervisi.setEnabled(false);
         else
             btnRezervisi.setEnabled(true);
+
+        if (Singleton.getInstance().getUlogovanKorisnik().getTipKorisnika().equals(TipKorisnika.KORISNIK)) {
+            btnIzmeni.setVisible(false);
+            btnIzvestaj.setVisible(false);
+        } else if (Singleton.getInstance().getUlogovanKorisnik().getTipKorisnika().equals(TipKorisnika.ADMINISTRATOR)) {
+            btnIzmeni.setVisible(true);
+            btnIzmeni.setVisible(true);
+        }
 
     }
     public String formatirajDatum(Date date) {

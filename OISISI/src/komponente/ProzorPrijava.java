@@ -99,7 +99,7 @@ public class ProzorPrijava extends JPanel {
         return new Korisnik(korisnickoIme, lozinka);
     }
 
-    private void ocistiPolja() {
+    public void ocistiPolja() {
         this.tfKorisnickoIme.setText("");
         this.tfLozinka.setText("");
     }

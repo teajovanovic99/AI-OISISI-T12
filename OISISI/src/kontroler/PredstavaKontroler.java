@@ -1,6 +1,7 @@
 package kontroler;
 
 import aplikacija.Singleton;
+import komponente.ProzorIzmeniPredstavu;
 import komponente.ProzorPredstavaDetaljanPrikaz;
 import komponente.ProzorPredstave;
 import komponente.Ruter;
@@ -38,6 +39,25 @@ public class PredstavaKontroler {
         ruter.promeniProzor(ProzorPredstavaDetaljanPrikaz.class);
     }
 
+    public void prikaziDetaljnoZaIzmenu(Predstava predstava) {
+        Singleton.getInstance().setPredstavaZaIzmenu(predstava);
+        Ruter ruter = Singleton.getInstance().getRuter();
+        ruter.osveziProzor(ProzorIzmeniPredstavu.class);
+        ruter.promeniProzor(ProzorIzmeniPredstavu.class);
+    }
+
+    public void izmeniPredstavu(Predstava predstava) {
+        Predstava p = Singleton.getInstance().getPredstavaZaIzmenu();
+        p.setNaziv(predstava.getNaziv());
+        p.setOpis(predstava.getOpis());
+        p.setCena(predstava.getCena());
+        p.setDatumVreme(predstava.getDatumVreme());
+        this.predstave.put(p.getSifra(), p);
+        Ruter ruter = Singleton.getInstance().getRuter();
+        ruter.osveziProzor(ProzorPredstave.class);
+        ruter.promeniProzor(ProzorPredstave.class);
+    }
+
     public List<Predstava> pretraziPredstave(Pretraga pretraga) {
         Set<Predstava> rezultat = new HashSet<>();
         Set<Predstava> setNaziv = new HashSet<>();
@@ -73,11 +93,11 @@ public class PredstavaKontroler {
         rezultat.addAll(setNaziv);
         rezultat.addAll(setCena);
         rezultat.addAll(setDatum);
-        if (!setNaziv.isEmpty())
+        if (filterNaziv)
             rezultat.retainAll(setNaziv);
-        if (!setCena.isEmpty())
+        if (filterCena)
             rezultat.retainAll(setCena);
-        if (!setDatum.isEmpty())
+        if (filterDatum)
             rezultat.retainAll(setDatum);
 
         return rezultat.stream().collect(Collectors.toList());

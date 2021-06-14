@@ -9,12 +9,19 @@ public class Meni extends JMenuBar {
 
     private JMenu meni;
     private JMenuItem miExit;
+    private JMenuItem miIzlogujSe;
     private JMenu predstaveMeni;
     private JMenuItem miPrikaziPredstave;
     private JMenuItem miKreirajPredstavu;
+    private JMenu izvestajMeni;
+    private JMenuItem miIzvestajUkupneZarade;
 
     public Meni() {
-        meni = new JMenu("Meni");
+        meni = new JMenu("Opcije");
+        miIzlogujSe = new JMenuItem(new IzlogujSeAkcija());
+        miIzlogujSe.setText("Odjavi se");
+        meni.add(miIzlogujSe);
+        meni.addSeparator();
         miExit = new JMenuItem(new ExitAkcija());
         miExit.setText("Izađi");
         meni.add(miExit);
@@ -27,7 +34,13 @@ public class Meni extends JMenuBar {
         miKreirajPredstavu.setText("Kreiraj predstavu");
         predstaveMeni.add(miKreirajPredstavu);
 
+        izvestajMeni = new JMenu("Izveštaji");
+        miIzvestajUkupneZarade = new JMenuItem(new GenerisiIzvestajAkcija());
+        miIzvestajUkupneZarade.setText("Izveštaj ukupne zarade");
+        izvestajMeni.add(miIzvestajUkupneZarade);
+
         add(meni);
+        add(izvestajMeni);
         add(predstaveMeni);
         add(Box.createGlue());
     }
@@ -36,13 +49,19 @@ public class Meni extends JMenuBar {
         switch (tipKorisnika) {
             case KORISNIK:
                 this.miExit.setVisible(true);
+                this.miIzlogujSe.setVisible(true);
                 this.miPrikaziPredstave.setVisible(true);
                 this.miKreirajPredstavu.setVisible(false);
+                this.izvestajMeni.setVisible(false);
+                this.miIzvestajUkupneZarade.setVisible(false);
                 break;
             case ADMINISTRATOR:
                 this.miExit.setVisible(true);
+                this.miIzlogujSe.setVisible(true);
                 this.miPrikaziPredstave.setVisible(true);
                 this.miKreirajPredstavu.setVisible(true);
+                this.izvestajMeni.setVisible(true);
+                this.miIzvestajUkupneZarade.setVisible(true);
                 break;
         }
 

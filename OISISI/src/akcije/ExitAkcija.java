@@ -28,6 +28,7 @@ public class ExitAkcija extends AbstractAction {
             ReadWriteFile rw = new ReadWriteFile();
             rw.writeFile("src/podaci/korisnici.txt", Singleton.getInstance().getKorisnici());
             rw.writeFile("src/podaci/predstave.txt", Singleton.getInstance().getPredstave());
+            rw.writeFile("src/podaci/karte.txt", Singleton.getInstance().getKarte());
 
             System.exit(0);
         }

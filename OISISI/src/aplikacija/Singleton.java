@@ -30,7 +30,9 @@ public class Singleton {
 
     private Korisnik ulogovanKorisnik;
     private Predstava detaljnoPrikazanaPredstava;
+    private Predstava predstavaZaIzmenu;
     private Set<Integer> rezervisanaSedista;
+    private Predstava predstavaIzvestaj;
 
     private Singleton() {
 
@@ -102,6 +104,15 @@ public class Singleton {
     public void setDetaljnoPrikazanaPredstava(Predstava detaljnoPrikazanaPredstava) {
         this.detaljnoPrikazanaPredstava = detaljnoPrikazanaPredstava;
     }
+
+    public Predstava getPredstavaZaIzmenu() {
+        return predstavaZaIzmenu;
+    }
+
+    public void setPredstavaZaIzmenu(Predstava predstavaZaIzmenu) {
+        this.predstavaZaIzmenu = predstavaZaIzmenu;
+    }
+
     public Map<Long, Karta> getKarte() {
         return karte;
     }
@@ -126,5 +137,12 @@ public class Singleton {
         this.kartaKontoler = kartaKontoler;
     }
 
+    public Predstava getPredstavaIzvestaj() {
+        return predstavaIzvestaj;
+    }
+
+    public void setPredstavaIzvestaj(Predstava predstavaIzvestaj) {
+        this.predstavaIzvestaj = predstavaIzvestaj;
+    }
 
 }
