@@ -18,6 +18,7 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -173,7 +174,7 @@ public class ProzorPredstave extends JPanel {
         Object[][] podaci = new Object[predstave.size()][3];
         for (int i = 0; i < predstave.size(); i++) {
             Predstava predstava = predstave.get(i);
-            Object[] o = new Object[] {predstava.getNaziv(), predstava.getDatumVreme(), predstava.getCena(),
+            Object[] o = new Object[] {predstava.getNaziv(), formatirajDatum(predstava.getDatumVreme()), predstava.getCena(),
                     predstava.getKarteRasprodate()?"Da": "Ne", "Detalji"};
             podaci[i] = o;
             prikazanePredstave.put(new Long(i), predstava);
@@ -194,6 +195,7 @@ public class ProzorPredstave extends JPanel {
         }
         columnModel.getColumn(0).setPreferredWidth(200);
         columnModel.getColumn(1).setPreferredWidth(200);
+        tblTabela.getTableHeader().setReorderingAllowed(false);
 
         JPanel sortOpcije = new JPanel();
         sortOpcije.setLayout(new GridBagLayout());
@@ -270,14 +272,13 @@ public class ProzorPredstave extends JPanel {
         prikazanePredstave = new HashMap<>();
         DefaultTableModel tableModel = (DefaultTableModel) tblTabela.getModel();
 
-        String[] kolone = {"Naziv predstave", "Datum izvođenja", "Cena predstave", "Karte rasprodate", "Više informacija"};
-//        List<Predstava> predstave = Singleton.getInstance().getPredstave().values()
-//                .stream().collect(Collectors.toList());
+        String[] kolone = {"Naziv predstave", "Datum izvođenja", "Cena predstave", "Karte rasprodate",
+                "Više informacija"};
 
         Object[][] podaci = new Object[predstave.size()][3];
         for (int i = 0; i < predstave.size(); i++) {
             Predstava predstava = predstave.get(i);
-            Object[] o = new Object[] {predstava.getNaziv(), predstava.getDatumVreme(), predstava.getCena(),
+            Object[] o = new Object[] {predstava.getNaziv(), formatirajDatum(predstava.getDatumVreme()), predstava.getCena(),
                     predstava.getKarteRasprodate()?"Da": "Ne", "Detalji"};
             podaci[i] = o;
             prikazanePredstave.put(new Long(i), predstava);
@@ -323,5 +324,11 @@ public class ProzorPredstave extends JPanel {
 
         return pretraga;
 
+    }
+
+    public String formatirajDatum(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy. hh:mm");
+        String stringDatum = sdf.format(date);
+        return stringDatum;
     }
 }

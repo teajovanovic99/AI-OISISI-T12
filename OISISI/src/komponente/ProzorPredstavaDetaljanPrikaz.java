@@ -4,11 +4,20 @@ import aplikacija.Singleton;
 import kontroler.PredstavaKontroler;
 import model.Predstava;
 import model.TipKorisnika;
+import utils.SedistaTableModel;
+import utils.SedistaTableModelListener;
 
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ProzorPredstavaDetaljanPrikaz extends JPanel {
 
@@ -20,6 +29,8 @@ public class ProzorPredstavaDetaljanPrikaz extends JPanel {
     private JTextField tfDatumVreme;
     private JLabel lblCena;
     private JTextField tfCena;
+    private JTable tblSedista;
+    private JButton btnRezervisi;
 
     public ProzorPredstavaDetaljanPrikaz() {
         lblNaziv = new JLabel("Naziv: ");
@@ -38,6 +49,35 @@ public class ProzorPredstavaDetaljanPrikaz extends JPanel {
         tfCena = new JTextField(30);
         tfCena.setEditable(false);
 
+        SedistaTableModel model = new SedistaTableModel(new Object[]{"Sedište", "Sedište 1", "Sedište 2", "Sedište 3",
+                "Sedište 4", "Sedište 5", "Sedište 6"}, 0);
+        tblSedista = new JTable(model);
+        tblSedista.getTableHeader().setReorderingAllowed(false);
+        tblSedista.getModel().addTableModelListener(new SedistaTableModelListener());
+
+        btnRezervisi = new JButton("Rezerviši");
+        btnRezervisi.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (Singleton.getInstance().getRezervisanaSedista().isEmpty()) {
+                    JOptionPane.showMessageDialog(null,
+                            "Potrebno je da izaberete bar 1 sedište!",
+                            Singleton.APP_NAME, JOptionPane.WARNING_MESSAGE);
+                } else {
+                    PredstavaKontroler predstavaKontroler = Singleton.getInstance().getPredstavaKontroler();
+                    predstavaKontroler.rezervisiKartu(Singleton.getInstance().getRezervisanaSedista());
+                    JOptionPane.showMessageDialog(null,
+                            "Uspešno rezervisane karte!",
+                            Singleton.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
+
+        JPanel pnlOpcije = new JPanel();
+        pnlOpcije.setLayout(new GridBagLayout());
+        pnlOpcije.add(btnRezervisi, new GridBagConstraints(0, 0, 1, 1, 0,
+                0, GridBagConstraints.EAST, GridBagConstraints.NONE,
+                new Insets(20, 5, 0,5 ), 0, 0));
 
         setLayout(new GridBagLayout());
         add(lblNaziv, new GridBagConstraints(0, 0, 1, 1, 0, 0,
@@ -64,13 +104,76 @@ public class ProzorPredstavaDetaljanPrikaz extends JPanel {
         add(tfCena, new GridBagConstraints(1, 3, 2, 1, 0, 0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(5, 5, 5,5 ), 0, 0));
+
+        add(tblSedista.getTableHeader(), new GridBagConstraints(0, 4, 3, 1, 0, 0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                new Insets(5, 5, 0,5 ), 0, 0));
+        add(tblSedista, new GridBagConstraints(0, 5, 3, 1, 0, 0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                new Insets(0, 5, 5,5 ), 0, 0));
+        add(pnlOpcije, new GridBagConstraints(2, 6, 1, 1, 0,
+                0, GridBagConstraints.EAST, GridBagConstraints.NONE,
+                new Insets(5, 5, 5,0 ), 0, 0));
     }
+    public void inicijalizujPrikazSedista() {
+        SedistaTableModel model = (SedistaTableModel) tblSedista.getModel();
+        String[] kolone = {"Sedište", "Sedište 1", "Sedište 2", "Sedište 3", "Sedište 4", "Sedište 5", "Sedište 6"};
+        Object[][] podaci = new Object[5][7];
+        int cnt = 0;
+        Predstava predstava = Singleton.getInstance().getDetaljnoPrikazanaPredstava();
+        List<Integer> sedista = predstava.getSedista().keySet().stream().collect(Collectors.toList());
+
+        Object[] red = new Object[7];
+        for (int i = 0; i < sedista.size(); i++) {
+            Boolean rezervisano = predstava.getSedista().get(sedista.get(i)) == null ? false : true;
+            red[1+i%6] = rezervisano;
+            model.setCellEditable(cnt, 1+i%6, !rezervisano);
+            if (i%6 == 5) {
+                int r = cnt+1;
+                red[0] = "Red "+r;
+                podaci[cnt] = red;
+                cnt++;
+                red = new Object[7];
+            }
+        }
+
+        model.setDataVector(podaci, kolone);
+        tblSedista.getColumnModel().getColumn(0).setCellRenderer(new TableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                boolean selected = table.getSelectionModel().isSelectedIndex(row);
+                Component component = table.getTableHeader().getDefaultRenderer().getTableCellRendererComponent(table, value, false, false, -1, -2);
+                ((JLabel) component).setHorizontalAlignment(SwingConstants.CENTER);
+                if (selected) {
+                    component.setFont(component.getFont().deriveFont(Font.PLAIN));
+                    component.setForeground(table.getSelectionForeground());
+                } else {
+                    component.setFont(component.getFont().deriveFont(Font.PLAIN));
+                }
+                return component;
+            }
+        });
+    }
+
 
     public void popuniPolja(Predstava predstava) {
         tfNaziv.setText(predstava.getNaziv());
         taOpis.setText(predstava.getOpis());
-        tfDatumVreme.setText(predstava.getDatumVreme().toString());
+        tfDatumVreme.setText(formatirajDatum(predstava.getDatumVreme()));
         tfCena.setText(predstava.getCena().toString());
+        Set<Integer> rezKarte = new HashSet<>();
+        Singleton.getInstance().setRezervisanaSedista(rezKarte);
+        inicijalizujPrikazSedista();
 
+        if (predstava.getKarteRasprodate())
+            btnRezervisi.setEnabled(false);
+        else
+            btnRezervisi.setEnabled(true);
+
+    }
+    public String formatirajDatum(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy. hh:mm");
+        String stringDatum = sdf.format(date);
+        return stringDatum;
     }
 }

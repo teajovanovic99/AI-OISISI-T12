@@ -26,8 +26,17 @@ public class Predstava implements Serializable {
         this.opis = opis;
         this.datumVreme = datumVreme;
         this.cena = cena;
-        this.sedista = new HashMap<>();
+        this.sedista = inicijalizujSedista();
         this.karteRasprodate = false;
+    }
+
+    public Map<Integer, Karta> inicijalizujSedista() {
+        Map<Integer, Karta> ret = new HashMap<>();
+        for (int i = 1; i < 31; i++) {
+            ret.put(i, null);
+        }
+
+        return ret;
     }
 
     public Long getSifra() {

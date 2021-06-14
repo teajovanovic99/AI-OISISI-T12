@@ -1,8 +1,6 @@
 package komponente;
 
-import akcije.ExitAkcija;
-import akcije.KreirajPredstavuAkcija;
-import akcije.PrikaziSvePredstaveAkcija;
+import akcije.*;
 import model.TipKorisnika;
 
 import javax.swing.*;
@@ -31,6 +29,7 @@ public class Meni extends JMenuBar {
 
         add(meni);
         add(predstaveMeni);
+        add(Box.createGlue());
     }
 
     public void podesiVidljivost(TipKorisnika tipKorisnika) {

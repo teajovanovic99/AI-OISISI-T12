@@ -1,5 +1,6 @@
 package aplikacija;
 
+import kontroler.KartaKontoler;
 import kontroler.KorisnikKontroler;
 import kontroler.PredstavaKontroler;
 import model.Karta;
@@ -8,6 +9,7 @@ import model.Predstava;
 import komponente.Ruter;
 
 import java.util.Map;
+import java.util.Set;
 
 public class Singleton {
 
@@ -17,6 +19,8 @@ public class Singleton {
     private Ruter ruter;
     private KorisnikKontroler korisnikKontroler;
     private PredstavaKontroler predstavaKontroler;
+    private KartaKontoler kartaKontoler;
+
 
     private Map<String, Korisnik> korisnici;
     private Map<Long, Predstava> predstave;
@@ -26,7 +30,7 @@ public class Singleton {
 
     private Korisnik ulogovanKorisnik;
     private Predstava detaljnoPrikazanaPredstava;
-
+    private Set<Integer> rezervisanaSedista;
 
     private Singleton() {
 
@@ -98,4 +102,29 @@ public class Singleton {
     public void setDetaljnoPrikazanaPredstava(Predstava detaljnoPrikazanaPredstava) {
         this.detaljnoPrikazanaPredstava = detaljnoPrikazanaPredstava;
     }
+    public Map<Long, Karta> getKarte() {
+        return karte;
+    }
+
+    public void setKarte(Map<Long, Karta> karte) {
+        this.karte = karte;
+    }
+
+    public Set<Integer> getRezervisanaSedista() {
+        return rezervisanaSedista;
+    }
+
+    public void setRezervisanaSedista(Set<Integer> rezervisanaSedista) {
+        this.rezervisanaSedista = rezervisanaSedista;
+    }
+
+    public KartaKontoler getKartaKontoler() {
+        return kartaKontoler;
+    }
+
+    public void setKartaKontoler(KartaKontoler kartaKontoler) {
+        this.kartaKontoler = kartaKontoler;
+    }
+
+
 }
