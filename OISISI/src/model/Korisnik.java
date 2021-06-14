@@ -1,9 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Korisnik {
+public class Korisnik implements Serializable {
+
+    private static final long serialVersionUID = -3017504378025844674L;
 
     private String korisnickoIme;
     private String lozinka;

@@ -1,10 +1,13 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Predstava {
+public class Predstava implements Serializable {
+
+    private static final long serialVersionUID = 228094533343789172L;
 
     private Long sifra;
     private String naziv;
