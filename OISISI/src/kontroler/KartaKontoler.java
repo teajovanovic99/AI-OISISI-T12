@@ -1,6 +1,8 @@
 package kontroler;
 
 import aplikacija.Singleton;
+import komponente.ProzorPredstave;
+import komponente.Ruter;
 import model.Karta;
 
 import java.util.Map;

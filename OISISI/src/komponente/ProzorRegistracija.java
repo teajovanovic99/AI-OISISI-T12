@@ -122,7 +122,7 @@ public class ProzorRegistracija extends JPanel {
             JOptionPane.showMessageDialog(null, "Ime je obavezno!",
                     Singleton.APP_NAME, JOptionPane.WARNING_MESSAGE);
             return null;
-        } else if (!ime.matches("[a-zA-ZžŽćĆčČđĐšŠ]")) {
+        } else if (!ime.matches("[a-zA-ZžŽćĆčČđĐšŠ]+")) {
             JOptionPane.showMessageDialog(null, "Ime mora da bude sačinjeno samo od slova!",
                     Singleton.APP_NAME, JOptionPane.WARNING_MESSAGE);
             return null;
@@ -130,7 +130,7 @@ public class ProzorRegistracija extends JPanel {
             JOptionPane.showMessageDialog(null, "Prezime je obavezno!",
                     Singleton.APP_NAME, JOptionPane.WARNING_MESSAGE);
             return null;
-        } else if (!prezime.matches("[a-zA-ZžŽćĆčČđĐšŠ]")) {
+        } else if (!prezime.matches("[a-zA-ZžŽćĆčČđĐšŠ]+")) {
             JOptionPane.showMessageDialog(null,
                     "Prezime mora da bude sačinjeno samo od slova!",
                     Singleton.APP_NAME, JOptionPane.WARNING_MESSAGE);

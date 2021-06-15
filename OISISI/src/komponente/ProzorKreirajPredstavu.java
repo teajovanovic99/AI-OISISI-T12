@@ -160,6 +160,6 @@ public class ProzorKreirajPredstavu extends JPanel {
         this.dpDatum.getModel().setSelected(true);
         this.jsSati.setValue(0);
         this.jsMinuti.setValue(0);
-        this.jsCenaKarte.setValue(0.00f);
+        this.jsCenaKarte.setValue(0.00d);
     }
 }
